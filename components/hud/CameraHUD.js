@@ -29,7 +29,13 @@ export default function CameraHUD() {
     setShowHistogram,
     setShowWaveform,
     showHistogram,
-    showWaveform
+    showWaveform,
+    showGrid,
+    setShowGrid,
+    showFocusPeaking,
+    setShowFocusPeaking,
+    showZebra,
+    setShowZebra
   } = useApp();
 
   const [showResetButton, setShowResetButton] = useState(false);
@@ -117,18 +123,24 @@ export default function CameraHUD() {
 
                 {/* Grid Overlay */}
                 <HUDButton
+                  active={showGrid}
+                  onClick={() => setShowGrid(!showGrid)}
                   icon={Square3Stack3DIcon}
                   label="Grid"
                 />
 
                 {/* Focus Peaking */}
                 <HUDButton
+                  active={showFocusPeaking}
+                  onClick={() => setShowFocusPeaking(!showFocusPeaking)}
                   icon={ViewfinderCircleIcon}
                   label="Focus Peaking"
                 />
 
                 {/* Zebra Stripes */}
                 <HUDButton
+                  active={showZebra}
+                  onClick={() => setShowZebra(!showZebra)}
                   icon={AdjustmentsHorizontalIcon}
                   label="Zebra"
                 />

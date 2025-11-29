@@ -6,7 +6,7 @@ import { getGreeting } from '@/lib/constants/greetings';
 import { formatStorage } from '@/lib/utils/helpers';
 
 export default function InfoOverlays() {
-  const { showInfoOverlays, currentPage, cameraSettings } = useApp();
+  const { showInfoOverlays, currentPage } = useApp();
 
   if (!showInfoOverlays) return null;
 
@@ -14,7 +14,6 @@ export default function InfoOverlays() {
     <>
       <TopLeftInfo currentPage={currentPage} />
       <TopRightInfo />
-      <BottomLeftInfo cameraSettings={cameraSettings} />
     </>
   );
 }
@@ -67,23 +66,5 @@ function LocationInfo() {
       <MapPinIcon className="h-3 w-3" />
       <span>Los Angeles, CA</span>
     </div>
-  );
-}
-
-function BottomLeftInfo({ cameraSettings }) {
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className="fixed bottom-20 left-4 z-30 space-y-1 font-mono text-xs text-white/60"
-      >
-        <div>ISO {cameraSettings.iso}</div>
-        <div>f/{cameraSettings.aperture}</div>
-        <div>{cameraSettings.shutter}</div>
-        <div>{cameraSettings.whiteBalance.toUpperCase()}</div>
-      </motion.div>
-    </AnimatePresence>
   );
 }

@@ -17,25 +17,56 @@ import { cn, getRandomItem } from '@/lib/utils/helpers';
 export default function Header() {
   const { currentPage, navigateToPage } = useApp();
   const [subtitles, setSubtitles] = useState(INITIAL_TITLES);
+  const [intervalId, setIntervalId] = useState(null);
+
+  // Function to change a subtitle at a specific slot or random slot
+  const changeSubtitle = (slotIndex = null) => {
+    setSubtitles(prev => {
+      const newSubtitles = [...prev];
+      const targetSlot = slotIndex !== null ? slotIndex : Math.floor(Math.random() * 3);
+
+      // Get a new title that's different from ALL current titles (no repeats across any slots)
+      let newTitle;
+      let attempts = 0;
+      do {
+        newTitle = getRandomItem(TITLE_POOL);
+        attempts++;
+      } while (newSubtitles.includes(newTitle) && attempts < 50);
+
+      // Only update if we found a unique title
+      if (!newSubtitles.includes(newTitle)) {
+        newSubtitles[targetSlot] = newTitle;
+      }
+
+      return newSubtitles;
+    });
+  };
+
+  // Handle subtitle click - change immediately and restart timer
+  const handleSubtitleClick = (index) => {
+    // Clear existing interval
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+
+    // Change the clicked subtitle
+    changeSubtitle(index);
+
+    // Restart the interval
+    const newInterval = setInterval(() => {
+      changeSubtitle();
+    }, 2500);
+
+    setIntervalId(newInterval);
+  };
 
   // Rotate subtitles every 2.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setSubtitles(prev => {
-        const newSubtitles = [...prev];
-        // Pick a random slot (0, 1, or 2)
-        const slotToChange = Math.floor(Math.random() * 3);
-
-        // Get a new title that's different from the current one in that slot
-        let newTitle;
-        do {
-          newTitle = getRandomItem(TITLE_POOL);
-        } while (newTitle === prev[slotToChange]);
-
-        newSubtitles[slotToChange] = newTitle;
-        return newSubtitles;
-      });
+      changeSubtitle();
     }, 2500);
+
+    setIntervalId(interval);
 
     return () => clearInterval(interval);
   }, []);
@@ -64,10 +95,17 @@ export default function Header() {
                 Menelek Makonnen
               </h1>
 
-              {/* Rotating subtitles */}
+              {/* Rotating subtitles - clickable to change */}
               <div className="mt-1 flex gap-2 text-xs text-white/60 md:text-sm">
                 {subtitles.map((title, index) => (
-                  <div key={`slot-${index}`} className="relative min-w-[100px]">
+                  <button
+                    key={`slot-${index}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSubtitleClick(index);
+                    }}
+                    className="relative min-w-[100px] cursor-pointer transition-colors hover:text-white/80"
+                  >
                     <AnimatePresence mode="wait">
                       <motion.span
                         key={title}
@@ -80,7 +118,7 @@ export default function Header() {
                         {title}
                       </motion.span>
                     </AnimatePresence>
-                  </div>
+                  </button>
                 ))}
               </div>
             </button>

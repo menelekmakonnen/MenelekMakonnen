@@ -228,13 +228,14 @@ function YouTubeEmbed({ url }) {
 
 function InstagramEmbed({ url, embedCode }) {
   return (
-    <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg">
+    <div className="relative aspect-[9/16] w-full max-w-md overflow-hidden rounded-lg">
       <iframe
         src={`https://www.instagram.com/p/${embedCode}/embed`}
         className="h-full w-full"
         frameBorder="0"
         scrolling="no"
         allowTransparency="true"
+        allow="encrypted-media"
       />
     </div>
   );

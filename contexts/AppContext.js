@@ -25,6 +25,9 @@ export function AppProvider({ children }) {
   const [showHistogram, setShowHistogram] = useState(false);
   const [showWaveform, setShowWaveform] = useState(false);
   const [showInfoOverlays, setShowInfoOverlays] = useState(true);
+  const [showGrid, setShowGrid] = useState(false);
+  const [showFocusPeaking, setShowFocusPeaking] = useState(false);
+  const [showZebra, setShowZebra] = useState(false);
 
   // Battery state (time-based)
   const [batteryLevel, setBatteryLevel] = useState(100);
@@ -241,6 +244,12 @@ export function AppProvider({ children }) {
     setShowWaveform,
     showInfoOverlays,
     setShowInfoOverlays,
+    showGrid,
+    setShowGrid,
+    showFocusPeaking,
+    setShowFocusPeaking,
+    showZebra,
+    setShowZebra,
 
     // Battery
     batteryLevel,
