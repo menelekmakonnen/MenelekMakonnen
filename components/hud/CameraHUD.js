@@ -13,10 +13,19 @@ import {
   CameraIcon,
   SunIcon,
   BoltIcon,
-  AdjustmentsVerticalIcon
+  AdjustmentsVerticalIcon,
+  CursorArrowRaysIcon
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/contexts/AppContext';
-import { HUD_MODES, ISO_VALUES, APERTURE_VALUES, SHUTTER_SPEEDS, WHITE_BALANCE_MODES } from '@/lib/constants/camera';
+import {
+  HUD_MODES,
+  ISO_VALUES,
+  APERTURE_VALUES,
+  SHUTTER_SPEEDS,
+  WHITE_BALANCE_MODES,
+  GRID_TYPES,
+  CURSOR_MODES
+} from '@/lib/constants/camera';
 import { cn } from '@/lib/utils/helpers';
 import BatteryIndicator from './BatteryIndicator';
 
@@ -69,6 +78,38 @@ export default function CameraHUD() {
   const togglePanel = (panel) => {
     setOpenPanel(openPanel === panel ? null : panel);
   };
+
+  const toggleGrid = () => {
+    if (!showGrid || !cameraSettings.grid) {
+      updateCameraSetting('grid', GRID_TYPES[0].id);
+      setShowGrid(true);
+      return;
+    }
+
+    const currentIndex = GRID_TYPES.findIndex(type => type.id === cameraSettings.grid);
+    const nextIndex = (currentIndex + 1) % (GRID_TYPES.length + 1);
+
+    if (nextIndex === GRID_TYPES.length) {
+      setShowGrid(false);
+      updateCameraSetting('grid', null);
+      return;
+    }
+
+    updateCameraSetting('grid', GRID_TYPES[nextIndex].id);
+    setShowGrid(true);
+  };
+
+  const cycleCursorMode = () => {
+    const currentIndex = CURSOR_MODES.findIndex(mode => mode.id === cameraSettings.cursorMode);
+    const nextMode = CURSOR_MODES[(currentIndex + 1) % CURSOR_MODES.length];
+    updateCameraSetting('cursorMode', nextMode.id);
+  };
+
+  const currentGridLabel = cameraSettings.grid
+    ? GRID_TYPES.find(type => type.id === cameraSettings.grid)?.name || 'Grid'
+    : 'Grid';
+
+  const currentCursorLabel = CURSOR_MODES.find(mode => mode.id === cameraSettings.cursorMode)?.name || 'Cursor';
 
   if (hudMode === HUD_MODES.HIDDEN) {
     return (
@@ -201,9 +242,9 @@ export default function CameraHUD() {
                 {/* Grid */}
                 <HUDButton
                   active={showGrid}
-                  onClick={() => setShowGrid(!showGrid)}
+                  onClick={toggleGrid}
                   icon={Square3Stack3DIcon}
-                  label="Grid"
+                  label={currentGridLabel}
                 />
 
                 {/* Focus Peaking */}
@@ -220,6 +261,13 @@ export default function CameraHUD() {
                   onClick={() => setShowZebra(!showZebra)}
                   icon={Bars3Icon}
                   label="Zebra"
+                />
+
+                {/* Cursor Style */}
+                <HUDButton
+                  onClick={cycleCursorMode}
+                  icon={CursorArrowRaysIcon}
+                  label={currentCursorLabel}
                 />
               </div>
 

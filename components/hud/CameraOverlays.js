@@ -2,13 +2,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 
 export default function CameraOverlays() {
-  const { showHistogram, showWaveform, showGrid, showFocusPeaking, showZebra } = useApp();
+  const { showHistogram, showWaveform, showGrid, showFocusPeaking, showZebra, cameraSettings } = useApp();
+  const gridType = cameraSettings.grid;
 
   return (
     <>
       {/* Grid Overlay */}
       <AnimatePresence>
-        {showGrid && <GridOverlay />}
+        {showGrid && gridType && <GridOverlay type={gridType} />}
       </AnimatePresence>
 
       {/* Focus Peaking Overlay */}
@@ -34,7 +35,42 @@ export default function CameraOverlays() {
   );
 }
 
-function GridOverlay() {
+function GridOverlay({ type }) {
+  const renderGrid = () => {
+    switch (type) {
+      case 'golden-ratio':
+        return (
+          <>
+            <line x1="38.2%" y1="0" x2="38.2%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="61.8%" y1="0" x2="61.8%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="0" y1="38.2%" x2="100%" y2="38.2%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="0" y1="61.8%" x2="100%" y2="61.8%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <circle cx="61.8%" cy="38.2%" r="5" stroke="white" strokeWidth="1" fill="none" opacity="0.5" />
+          </>
+        );
+      case 'diagonal':
+        return (
+          <>
+            <line x1="0" y1="0" x2="100%" y2="100%" stroke="white" strokeWidth="1" opacity="0.25" />
+            <line x1="100%" y1="0" x2="0" y2="100%" stroke="white" strokeWidth="1" opacity="0.25" />
+            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1" opacity="0.2" />
+            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="white" strokeWidth="1" opacity="0.2" />
+          </>
+        );
+      case 'rule-of-thirds':
+      default:
+        return (
+          <>
+            <line x1="33.33%" y1="0" x2="33.33%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="66.66%" y1="0" x2="66.66%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="0" y1="33.33%" x2="100%" y2="33.33%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <line x1="0" y1="66.66%" x2="100%" y2="66.66%" stroke="white" strokeWidth="1" opacity="0.3" />
+            <circle cx="50%" cy="50%" r="4" stroke="white" strokeWidth="1" fill="none" opacity="0.5" />
+          </>
+        );
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -42,18 +78,8 @@ function GridOverlay() {
       exit={{ opacity: 0 }}
       className="pointer-events-none fixed inset-0 z-30"
     >
-      {/* Rule of thirds grid */}
       <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-        {/* Vertical lines */}
-        <line x1="33.33%" y1="0" x2="33.33%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
-        <line x1="66.66%" y1="0" x2="66.66%" y2="100%" stroke="white" strokeWidth="1" opacity="0.3" />
-
-        {/* Horizontal lines */}
-        <line x1="0" y1="33.33%" x2="100%" y2="33.33%" stroke="white" strokeWidth="1" opacity="0.3" />
-        <line x1="0" y1="66.66%" x2="100%" y2="66.66%" stroke="white" strokeWidth="1" opacity="0.3" />
-
-        {/* Center crosshair */}
-        <circle cx="50%" cy="50%" r="4" stroke="white" strokeWidth="1" fill="none" opacity="0.5" />
+        {renderGrid()}
       </svg>
     </motion.div>
   );
