@@ -16,7 +16,7 @@ import {
   AdjustmentsVerticalIcon,
   CursorArrowRaysIcon,
   VariableIcon,
-  PhotoIcon
+  MagnifyingGlassCircleIcon
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/contexts/AppContext';
 import {
@@ -284,7 +284,7 @@ export default function CameraHUD() {
                 {/* Lens Mode */}
                 <HUDButton
                   onClick={cycleLensMode}
-                  icon={PhotoIcon}
+                  icon={MagnifyingGlassCircleIcon}
                   label={`Lens ${currentLensLabel}`}
                 />
               </div>
@@ -447,7 +447,7 @@ function AperturePanel({ currentValue, onSelect, onClose }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
-      className="fixed bottom-20 left-96 z-50 w-80 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
+      className="fixed bottom-20 left-4 z-50 w-80 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-white">Aperture: f/{currentValue}</h3>
@@ -482,7 +482,7 @@ function ShutterPanel({ currentValue, onSelect, onClose }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
-      className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-80 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
+      className="fixed bottom-20 left-4 z-50 w-80 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-white">Shutter: {currentValue}</h3>
@@ -515,7 +515,7 @@ function WhiteBalancePanel({ currentValue, onSelect, onClose }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
-      className="fixed bottom-20 right-4 z-50 w-64 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
+      className="fixed bottom-20 left-4 z-50 w-64 rounded-lg border border-white/20 bg-black/90 p-4 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-white">White Balance</h3>

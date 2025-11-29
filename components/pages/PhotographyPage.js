@@ -59,11 +59,18 @@ export default function PhotographyPage() {
             className="mb-8"
           >
             <h1 className="text-4xl font-bold text-white">
-              Photography
+              Photography – Character Studies in Disguise
             </h1>
-            <p className="mt-2 text-white/60">
-              Capturing moments, freezing time
-            </p>
+            <div className="mt-2 space-y-2 text-white/70">
+              <p>
+                My camera is never just hunting for “pretty.” It’s hunting for story. Every portrait, every fashion shot, every behind-the-scenes frame is treated like a panel from a graphic novel.
+                Composition, posture, expression, colour grading – all working together to tell you who this person is before they say a word.
+              </p>
+              <p>
+                Expect cinematic portraits, world-building photography that feels like stills from a bigger universe, and BTS proof that we live the filmmaking life.
+                I’m less interested in making you “look nice” and more interested in making you look iconic.
+              </p>
+            </div>
           </motion.div>
 
           {/* Category grid */}

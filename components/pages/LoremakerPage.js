@@ -104,11 +104,19 @@ export default function LoremakerPage() {
         className="mb-8"
       >
         <h1 className="text-4xl font-bold text-white">
-          Loremaker Universe
+          The Loremaker Universe – Not “The African X”, Just Its Own Giant
         </h1>
-        <p className="mt-2 text-white/60">
-          Explore the universe of characters and worlds
-        </p>
+        <div className="mt-3 space-y-3 text-white/70">
+          <p>
+            I grew up loving worlds that didn’t look like me—Middle-earth, Westeros, Gotham, Metropolis—and I respect all of them. They proved that one obsessively built universe can change culture for decades.
+            Now I’m building a universe that can stand beside them.
+          </p>
+          <p>
+            The Loremaker Universe is a long-form conversation between African myth, diaspora reality, superheroes, magic, and science.
+            You’ll find characters who could walk into a DC crossover and not get overshadowed, magic systems rooted in African history, and timelines designed to rival any epic canon.
+            Read the profiles, connect the dots, and know the films, series, and games are coming. This is the blueprint.
+          </p>
+        </div>
 
         <div className="mt-4 flex gap-3">
           <motion.button

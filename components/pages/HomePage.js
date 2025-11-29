@@ -76,14 +76,29 @@ export default function HomePage() {
         className="mb-16 text-center"
       >
         <h1 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">
-          Menelek Makonnen
+          Menelek Makonnen – Filmmaker, Worldbuilder, AI Super-Nerd
         </h1>
-        <p className="mx-auto max-w-2xl text-lg text-white/60">
-          Multidisciplinary creative exploring the intersection of storytelling,
-          technology, and visual artistry. Director, world builder, and AI innovator
-          crafting cinematic narratives, immersive universes, and visual experiences
-          across film, photography, and emerging technologies.
+        <p className="mx-auto max-w-3xl text-lg text-white/70">
+          I build universes, shoot films inside them, then use AI to bend the tools to my will.
         </p>
+
+        <div className="mx-auto mt-6 max-w-4xl space-y-4 text-base text-white/70">
+          <p>
+            I grew up in Ghana reading Spirou et Fantasio, Tintin and a stack of worn-out Disney comics from the 80s and 90s.
+            By thirteen I was deep in The Wizard in the Woods, The Worst Witch and Harry Potter and the Philosopher’s Stone.
+            By fifteen I’d graduated to Justice League, The Batman (2004) and Static Shock. Those worlds raised my imagination.
+            Now I’m building their peer.
+          </p>
+          <p>
+            I’m a Ghanaian filmmaker, creative director and universe-builder working between London and Accra. I don’t make “the African version of” anything.
+            I build original fantasy, superhero and supernatural worlds that can sit on the same shelf as Tolkien, GRRM, the MCU and DC Animation – not under them.
+          </p>
+          <p>
+            On this site you’ll find three pillars of what I do: LORE – the living, expanding universe behind my stories. FILM & VIDEO – short films, music videos and cinematic reels.
+            AI & VISUALS – photography, AI-generated concept art and edits that look like they escaped from a storyboard.
+            If you’re a studio, brand or human with taste and a bit of courage, this is your invitation. Come explore. Get obsessed. Then call me when you’re ready to build something bigger than you are.
+          </p>
+        </div>
       </motion.div>
 
       {/* Section Cards */}
@@ -118,12 +133,15 @@ export default function HomePage() {
         <h2 className="mb-4 text-2xl font-bold text-white">
           About Menelek Makonnen
         </h2>
-        <p className="text-white/70">
-          A creative technologist, world builder, and visual storyteller. Bridging the gap
-          between imagination and execution through film, photography, AI, and immersive
-          experiences. Every project is a journey into crafting narratives that resonate
-          across multiple mediums.
-        </p>
+        <div className="space-y-3 text-white/70">
+          <p>
+            Menelek Makonnen is not just a creative—he's a visionary renegade, crafting worlds vivid enough to lose yourself in, yet grounded enough to find yourself anew.
+            With roots deep in early fascinations from Tintin’s daring exploits and Spirou’s whimsical adventures, Menelek evolved into a master storyteller blending the intricate plotting of Game of Thrones with the thrilling heroics of the MCU’s golden years.
+          </p>
+          <p>
+            Here, reality dances seductively with fantasy, urging you to take a step closer. Dare to explore. Dare to collaborate. Dare to create something unforgettable.
+          </p>
+        </div>
       </motion.div>
 
       {/* Navigation Hint */}

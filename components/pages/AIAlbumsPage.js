@@ -40,11 +40,18 @@ export default function AIAlbumsPage() {
             className="mb-8"
           >
             <h1 className="text-4xl font-bold text-white">
-              AI Albums
+              AI Imagery – Concept Art from the Future
             </h1>
-            <p className="mt-2 text-white/60">
-              AI-generated visual explorations
-            </p>
+            <div className="mt-2 space-y-2 text-white/70">
+              <p>
+                AI is not here to replace artists. It’s here to expose who actually has ideas. I use it like directors use pre-vis:
+                to prototype universes, characters, locations and moods before we spend real money and days on set.
+              </p>
+              <p>
+                Inside these albums you’ll see concept art for heroes, gods, villains and cities that haven’t reached the screen yet—visual experiments where African aesthetics collide with sci-fi, supernatural horror, romance and surrealism.
+                If your company is still arguing about whether AI is “allowed,” you’re already behind. I’m more interested in what we can build with it.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div
