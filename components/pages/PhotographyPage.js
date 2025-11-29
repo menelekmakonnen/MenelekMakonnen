@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FolderIcon } from '@heroicons/react/24/outline';
-import { PHOTOGRAPHY_ALBUMS } from '@/lib/data/googleDrive';
+import useDriveAlbums from '@/hooks/useDriveAlbums';
 import AlbumGrid from '../album/AlbumGrid';
 import ItemGrid from '../album/ItemGrid';
 import SingleView from '../singleview/SingleView';
@@ -11,7 +11,7 @@ export default function PhotographyPage() {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [singleViewItem, setSingleViewItem] = useState(null);
 
-  const albums = PHOTOGRAPHY_ALBUMS;
+  const { albums, loading, error } = useDriveAlbums('photography');
   const categories = Array.from(
     new Map(
       albums.map(album => [
@@ -74,7 +74,12 @@ export default function PhotographyPage() {
           </motion.div>
 
           {/* Category grid */}
-          <AlbumGrid albums={categories} onAlbumClick={handleCategoryClick} />
+          {error && <p className="text-sm text-red-400">{error}</p>}
+          {loading ? (
+            <p className="text-white/70">Loading albums…</p>
+          ) : (
+            <AlbumGrid albums={categories} onAlbumClick={handleCategoryClick} />
+          )}
         </>
       ) : selectedCategory && !selectedAlbum ? (
         <>
@@ -99,14 +104,18 @@ export default function PhotographyPage() {
             </p>
           </motion.div>
 
-          <AlbumGrid
-            albums={albums.filter(album => album.category.toLowerCase() === selectedCategory.id).map(album => ({
-              ...album,
-              title: album.name
-            }))}
-            onAlbumClick={handleAlbumClick}
-            thumbnailType="vertical"
-          />
+          {loading ? (
+            <p className="text-white/70">Loading albums…</p>
+          ) : (
+            <AlbumGrid
+              albums={albums.filter(album => album.category.toLowerCase() === selectedCategory.id).map(album => ({
+                ...album,
+                title: album.name
+              }))}
+              onAlbumClick={handleAlbumClick}
+              thumbnailType="vertical"
+            />
+          )}
         </>
       ) : selectedAlbum ? (
         <>

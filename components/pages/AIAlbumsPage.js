@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AI_ALBUMS } from '@/lib/data/googleDrive';
+import useDriveAlbums from '@/hooks/useDriveAlbums';
 import AlbumGrid from '../album/AlbumGrid';
 import ItemGrid from '../album/ItemGrid';
 import SingleView from '../singleview/SingleView';
@@ -9,8 +9,7 @@ export default function AIAlbumsPage() {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [singleViewItem, setSingleViewItem] = useState(null);
 
-  // In production, fetch from Google Drive
-  const albums = AI_ALBUMS;
+  const { albums, loading, error } = useDriveAlbums('ai');
 
   const handleAlbumClick = (album) => {
     setSelectedAlbum(album);
@@ -54,11 +53,19 @@ export default function AIAlbumsPage() {
           </motion.div>
 
           {/* Album grid */}
-          <AlbumGrid
-            albums={albums.map(album => ({ ...album, title: album.name }))}
-            onAlbumClick={handleAlbumClick}
-            thumbnailType="vertical"
-          />
+          {error && (
+            <p className="text-sm text-red-400">{error}</p>
+          )}
+
+          {loading ? (
+            <p className="text-white/70">Loading albums…</p>
+          ) : (
+            <AlbumGrid
+              albums={albums.map(album => ({ ...album, title: album.name }))}
+              onAlbumClick={handleAlbumClick}
+              thumbnailType="vertical"
+            />
+          )}
         </>
       ) : (
         <>
@@ -102,28 +109,28 @@ export default function AIAlbumsPage() {
       {/* Single View */}
       <AnimatePresence>
         {singleViewItem && selectedAlbum && (
-          <SingleView
-            item={singleViewItem}
-            items={selectedAlbum.images?.map(image => ({
-              ...image,
-              id: image.id,
-              title: image.title,
-              thumbnail: image.url,
-              coverImage: image.url
-            })) || []}
-            albums={albums.map(album => ({
-              ...album,
-              items: album.images?.map(image => ({
+            <SingleView
+              item={singleViewItem}
+              items={selectedAlbum.images?.map(image => ({
                 ...image,
                 id: image.id,
                 title: image.title,
                 thumbnail: image.url,
                 coverImage: image.url
-              })) || []
-            }))}
-            currentAlbumId={selectedAlbum.id}
-            onClose={() => setSingleViewItem(null)}
-          />
+              })) || []}
+              albums={albums.map(album => ({
+                ...album,
+                items: album.images?.map(image => ({
+                  ...image,
+                  id: image.id,
+                  title: image.title,
+                  thumbnail: image.url,
+                  coverImage: image.url
+                })) || []
+              }))}
+              currentAlbumId={selectedAlbum.id}
+              onClose={() => setSingleViewItem(null)}
+            />
         )}
       </AnimatePresence>
     </div>
