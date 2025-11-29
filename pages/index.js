@@ -196,38 +196,147 @@ export default function Home() {
     if (page === 'home') {
       return (
         <div className="space-y-6">
-          <div className="glass-panel rounded-2xl p-8">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Welcome</p>
-            <h1 className="text-4xl font-semibold">Luxury camera-inspired portfolio</h1>
-            <p className="mt-2 max-w-3xl text-slate-300">
-              Explore the viewfinder to see films, music videos, photography, AI imagery, and high-energy video edits. Switch lenses, toggle overlays, and keep the HUD in control.
-            </p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="glass-panel rounded-2xl p-6">
-              <h3 className="text-lg font-semibold">Latest Films</h3>
-              <div className="mt-3 space-y-2">
-                {films.slice(0, 3).map((film) => (
+          <div className="glass-panel accent-ring rounded-3xl p-8 shadow-2xl">
+            <div className="grid items-center gap-8 md:grid-cols-[1.05fr,0.95fr]">
+              <div className="space-y-4">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-300">Welcome</p>
+                <h1 className="text-4xl font-semibold leading-tight">Luxury camera-inspired portfolio OS</h1>
+                <p className="max-w-2xl text-slate-200">
+                  A premium EVF for films, music videos, photography, AI imagery, and high-energy edits. Cruise with keyboard shortcuts, toggle overlays, and jump straight into Single View.
+                </p>
+                <div className="flex flex-wrap gap-3 text-sm">
                   <button
-                    key={film.title}
-                    className="flex w-full items-center justify-between rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-3 text-left hover:border-cyan-400"
-                    onClick={() => openAlbum({ name: 'Films', items: films }, film, [{ name: 'Films', items: films }])}
+                    onClick={() => setPage('films')}
+                    className="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-medium shadow-[0_10px_35px_rgba(0,0,0,0.35)] transition hover:border-cyan-300/80 hover:bg-cyan-500/15"
                   >
-                    <div>
-                      <p className="text-sm font-semibold">{film.title}</p>
-                      <p className="text-xs text-slate-400">{film.description}</p>
-                    </div>
-                    <span className="text-xs text-slate-400">{film.runtime}</span>
+                    View Films & Music
                   </button>
+                  <button
+                    onClick={() => setPage('edits')}
+                    className="rounded-full border border-cyan-300/50 bg-cyan-400/10 px-4 py-2 font-medium text-cyan-50 shadow-[0_10px_35px_rgba(0,0,0,0.35)] transition hover:bg-cyan-400/20"
+                  >
+                    Open Video Edits
+                  </button>
+                  <button
+                    onClick={() => setPage('links')}
+                    className="rounded-full border border-white/15 px-4 py-2 font-medium text-slate-100 transition hover:border-cyan-200/60"
+                  >
+                    Links & Contacts
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+                  {[{ label: 'Films', value: films.length }, { label: 'Music Videos', value: musicVideos.length }, { label: 'Video Edits', value: Object.values(videoEdits).flat().length }, { label: 'Photo / AI Albums', value: photographyAlbums.length + aiAlbums.length }].map((item) => (
+                    <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 shadow-inner">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">{item.label}</p>
+                      <p className="text-xl font-semibold text-white">{item.value.toString().padStart(2, '0')}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-5 shadow-[0_15px_50px_rgba(0,0,0,0.35)]">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Latest Films</h3>
+                    <span className="text-xs text-slate-300">Tap to preview</span>
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {films.slice(0, 3).map((film) => (
+                      <button
+                        key={film.title}
+                        className="group flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:border-cyan-300/70 hover:bg-cyan-400/10"
+                        onClick={() => openAlbum({ name: 'Films', items: films }, film, [{ name: 'Films', items: films }])}
+                      >
+                        <div>
+                          <p className="text-sm font-semibold text-white">{film.title}</p>
+                          <p className="text-xs text-slate-300">{film.description}</p>
+                        </div>
+                        <span className="text-[11px] text-cyan-100">{film.runtime}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Book</p>
+                      <h3 className="text-lg font-semibold text-white">The Last Ochiyamie</h3>
+                      <p className="text-sm text-slate-300">Feature-length novel now available.</p>
+                    </div>
+                    <a
+                      className="rounded-full border border-cyan-300/60 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-50 transition hover:bg-cyan-400/20"
+                      href="https://a.co/d/iG5DOBk"
+                    >
+                      Visit Amazon
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="glass-panel rounded-2xl p-5">
+              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Signature reels</p>
+              <h3 className="text-lg font-semibold">Video edits</h3>
+              <p className="text-sm text-slate-300">Epic, Beauty & Travel, BTS, AI educator reels.</p>
+              <div className="mt-3 space-y-2 text-sm">
+                {Object.entries(videoEdits)
+                  .slice(0, 3)
+                  .map(([name, items]) => (
+                    <button
+                      key={name}
+                      className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-left transition hover:border-cyan-200/70 hover:bg-cyan-500/10"
+                      onClick={() => openAlbum({ name, items }, items[0], Object.entries(videoEdits).map(([label, list]) => ({ name: label, items: list })))}
+                    >
+                      <span className="font-medium text-white">{name}</span>
+                      <span className="text-[11px] text-slate-300">{items.length} clips</span>
+                    </button>
+                  ))}
+              </div>
+            </div>
+            <div className="glass-panel rounded-2xl p-5">
+              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Storyworlds</p>
+              <h3 className="text-lg font-semibold">Loremaker universe</h3>
+              <p className="text-sm text-slate-300">20 rotating characters with art & hook lines.</p>
+              <button
+                className="mt-3 w-full rounded-xl border border-cyan-300/50 bg-cyan-400/10 px-3 py-2 text-sm font-semibold text-cyan-50 transition hover:bg-cyan-400/20"
+                onClick={() => setPage('loremaker')}
+              >
+                Enter Loremaker
+              </button>
+              <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-300">
+                {loremakerCharacters.slice(0, 4).map((character) => (
+                  <div key={character.title} className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                    <p className="font-semibold text-white">{character.title}</p>
+                    <p className="text-[11px] text-slate-400">{character.alias || character.location}</p>
+                  </div>
                 ))}
               </div>
             </div>
-            <div className="glass-panel rounded-2xl p-6">
-              <h3 className="text-lg font-semibold">Book / Novel</h3>
-              <p className="text-sm text-slate-300">The Last Ochiyamie available now.</p>
-              <a className="mt-3 inline-flex items-center gap-2 rounded-lg border border-cyan-400/60 px-3 py-2 text-sm text-cyan-100" href="https://a.co/d/iG5DOBk">
-                Visit Amazon
-              </a>
+            <div className="glass-panel rounded-2xl p-5">
+              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Gallery surfaces</p>
+              <h3 className="text-lg font-semibold">Photography & AI</h3>
+              <p className="text-sm text-slate-300">Separate lenses for real-world shoots and synthetic imagery.</p>
+              <div className="mt-3 space-y-2 text-sm">
+                {[{ label: 'Photography albums', target: 'photography', count: photographyAlbums.length }, { label: 'AI albums', target: 'ai', count: aiAlbums.length }].map((item) => (
+                  <button
+                    key={item.label}
+                    className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-left transition hover:border-cyan-200/70 hover:bg-cyan-500/10"
+                    onClick={() => setPage(item.target)}
+                  >
+                    <span className="font-medium text-white">{item.label}</span>
+                    <span className="text-[11px] text-slate-300">{item.count} sets</span>
+                  </button>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-slate-200">
+                <span>Need a direct line?</span>
+                <button
+                  className="rounded-full border border-cyan-300/60 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-50 transition hover:bg-cyan-400/20"
+                  onClick={() => setPage('links')}
+                >
+                  Contact
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -362,7 +471,7 @@ export default function Home() {
       {!powered && <PowerScreen onPower={() => setPowered(true)} socials={socials} />}
       {powered && <Header currentPage={page} onNavigate={setPage} />}
       <main className={`pt-24 pb-32 ${mainClasses}`}>
-        <div className="mx-auto max-w-6xl space-y-6 px-4">
+        <div className="mx-auto max-w-7xl space-y-6 px-4">
           {contentForPage()}
         </div>
       </main>
