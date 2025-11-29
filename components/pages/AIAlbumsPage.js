@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { AI_ALBUMS_DRIVE_FOLDER, getDriveFolderUrl } from '@/lib/data/googleDrive';
+import { AI_ALBUMS_DRIVE_FOLDER } from '@/lib/data/googleDrive';
 
 export default function AIAlbumsPage() {
   const embedUrl = `https://drive.google.com/embeddedfolderview?id=${AI_ALBUMS_DRIVE_FOLDER}#grid`;
@@ -33,6 +33,7 @@ export default function AIAlbumsPage() {
           src={embedUrl}
           className="h-[70vh] w-full"
           allowFullScreen
+          sandbox="allow-same-origin allow-scripts"
           loading="lazy"
         />
       </div>
@@ -44,14 +45,6 @@ export default function AIAlbumsPage() {
         >
           Open expanded view
         </Link>
-        <a
-          href={getDriveFolderUrl(AI_ALBUMS_DRIVE_FOLDER)}
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-full border border-white/10 px-4 py-2 transition hover:border-white/30 hover:text-white"
-        >
-          View directly in Google Drive
-        </a>
       </div>
     </div>
   );

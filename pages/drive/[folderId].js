@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getDriveFolderUrl } from '@/lib/data/googleDrive';
 
 export default function DriveFolderView() {
   const router = useRouter();
@@ -34,6 +33,7 @@ export default function DriveFolderView() {
               src={embedUrl}
               className="h-[80vh] w-full"
               allowFullScreen
+              sandbox="allow-same-origin allow-scripts"
               loading="lazy"
             />
           </div>
@@ -45,14 +45,6 @@ export default function DriveFolderView() {
             >
               ← Back home
             </Link>
-            <a
-              href={getDriveFolderUrl(folderId)}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/10 px-4 py-2 transition hover:border-white/30 hover:text-white"
-            >
-              Open in Google Drive
-            </a>
           </div>
         </div>
       </main>
