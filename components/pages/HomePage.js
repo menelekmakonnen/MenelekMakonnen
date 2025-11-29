@@ -74,12 +74,13 @@ export default function HomePage() {
         className="mb-16 text-center"
       >
         <h1 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">
-          Welcome to the Universe
+          Menelek Makonnen
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-white/60">
-          A multidisciplinary creative exploring the intersection of storytelling,
-          technology, and visual artistry. From cinematic narratives to AI-generated
-          worlds, dive into a portfolio that spans multiple dimensions.
+          Multidisciplinary creative exploring the intersection of storytelling,
+          technology, and visual artistry. Director, world builder, and AI innovator
+          crafting cinematic narratives, immersive universes, and visual experiences
+          across film, photography, and emerging technologies.
         </p>
       </motion.div>
 
