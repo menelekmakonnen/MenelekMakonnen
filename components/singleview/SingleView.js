@@ -111,40 +111,44 @@ export default function SingleView({ item, items, albums = [], currentAlbumId, o
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md"
     >
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-60 rounded-full border border-white/20 bg-black/50 p-2 text-white transition-all hover:bg-white/10"
-      >
-        <XMarkIcon className="h-6 w-6" />
-      </button>
+      {/* Top controls bar */}
+      <div className="absolute top-0 left-0 right-0 z-60 flex items-center justify-between border-b border-white/10 bg-black/50 p-4 backdrop-blur-xl">
+        {/* Left controls */}
+        <div className="flex items-center gap-2">
+          <IconButton
+            icon={isSlideshowActive ? PauseIcon : PlayIcon}
+            onClick={() => setIsSlideshowActive(!isSlideshowActive)}
+            active={isSlideshowActive}
+          />
+          <IconButton
+            icon={isSingleViewExpanded ? ArrowsPointingInIcon : ArrowsPointingOutIcon}
+            onClick={() => setIsSingleViewExpanded(!isSingleViewExpanded)}
+            active={isSingleViewExpanded}
+          />
+        </div>
+
+        {/* Close button */}
+        <IconButton
+          icon={XMarkIcon}
+          onClick={onClose}
+        />
+      </div>
 
       {/* Main layout */}
       <div className={cn(
         'flex h-full',
-        isSingleViewExpanded ? 'flex-col' : 'flex-row'
+        isSingleViewExpanded ? 'flex-col pt-16' : 'flex-row pt-16'
       )}>
         {/* Main display area */}
         <div className={cn(
-          'flex items-center justify-center p-8',
-          isSingleViewExpanded ? 'flex-1' : 'flex-[3]'
+          'flex items-center justify-center',
+          isSingleViewExpanded ? 'flex-1 p-0' : 'flex-[3] p-8'
         )}>
-          <div className="relative w-full max-w-5xl">
-            <MainDisplay item={currentItem} />
-
-            {/* Controls overlay */}
-            <div className="absolute bottom-4 right-4 flex gap-2">
-              <ControlButton
-                icon={isSlideshowActive ? PauseIcon : PlayIcon}
-                label={isSlideshowActive ? 'Pause' : 'Slideshow'}
-                onClick={() => setIsSlideshowActive(!isSlideshowActive)}
-              />
-              <ControlButton
-                icon={isSingleViewExpanded ? ArrowsPointingInIcon : ArrowsPointingOutIcon}
-                label={isSingleViewExpanded ? 'Collapse' : 'Expand'}
-                onClick={() => setIsSingleViewExpanded(!isSingleViewExpanded)}
-              />
-            </div>
+          <div className={cn(
+            'relative w-full',
+            isSingleViewExpanded ? 'h-full' : 'max-w-5xl'
+          )}>
+            <MainDisplay item={currentItem} expanded={isSingleViewExpanded} />
 
             {/* Navigation arrows */}
             <button
@@ -185,18 +189,18 @@ export default function SingleView({ item, items, albums = [], currentAlbumId, o
   );
 }
 
-function MainDisplay({ item }) {
+function MainDisplay({ item, expanded }) {
   // Render different content based on item type
   if (item.youtubeUrl) {
-    return <YouTubeEmbed url={item.youtubeUrl} />;
+    return <YouTubeEmbed url={item.youtubeUrl} expanded={expanded} />;
   }
 
   if (item.instagramUrl) {
-    return <InstagramEmbed url={item.instagramUrl} embedCode={item.embedCode} />;
+    return <InstagramEmbed url={item.instagramUrl} embedCode={item.embedCode} expanded={expanded} />;
   }
 
   if (item.coverImage || item.thumbnail) {
-    return <ImageDisplay src={item.coverImage || item.thumbnail} alt={item.title || item.name || item.character} />;
+    return <ImageDisplay src={item.coverImage || item.thumbnail} alt={item.title || item.name || item.character} expanded={expanded} />;
   }
 
   return (
@@ -206,7 +210,7 @@ function MainDisplay({ item }) {
   );
 }
 
-function YouTubeEmbed({ url }) {
+function YouTubeEmbed({ url, expanded }) {
   const getVideoId = (url) => {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     return match ? match[1] : null;
@@ -215,7 +219,10 @@ function YouTubeEmbed({ url }) {
   const videoId = getVideoId(url);
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+    <div className={cn(
+      'relative aspect-video w-full overflow-hidden',
+      expanded ? 'h-full' : 'rounded-lg'
+    )}>
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=0`}
         className="h-full w-full"
@@ -226,9 +233,12 @@ function YouTubeEmbed({ url }) {
   );
 }
 
-function InstagramEmbed({ url, embedCode }) {
+function InstagramEmbed({ url, embedCode, expanded }) {
   return (
-    <div className="relative aspect-[9/16] w-full max-w-md overflow-hidden rounded-lg">
+    <div className={cn(
+      'relative aspect-[9/16] w-full overflow-hidden',
+      expanded ? 'h-full max-w-none' : 'max-w-md rounded-lg'
+    )}>
       <iframe
         src={`https://www.instagram.com/p/${embedCode}/embed`}
         className="h-full w-full"
@@ -241,15 +251,49 @@ function InstagramEmbed({ url, embedCode }) {
   );
 }
 
-function ImageDisplay({ src, alt }) {
+function ImageDisplay({ src, alt, expanded }) {
+  const [zoom, setZoom] = useState(1);
+
+  const handleWheel = (e) => {
+    if (!expanded) return;
+
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    setZoom(prev => Math.max(0.5, Math.min(3, prev + delta)));
+  };
+
+  const resetZoom = () => setZoom(1);
+
   return (
-    <div className="relative w-full">
+    <div
+      className={cn(
+        'relative flex items-center justify-center overflow-auto',
+        expanded ? 'h-full w-full' : 'w-full'
+      )}
+      onWheel={handleWheel}
+    >
       <img
         src={src}
         alt={alt}
-        className="w-full rounded-lg object-contain"
-        style={{ maxHeight: '70vh' }}
+        className={cn(
+          'object-contain transition-transform duration-200',
+          expanded ? 'h-full w-full' : 'w-full rounded-lg'
+        )}
+        style={{
+          maxHeight: expanded ? 'none' : '70vh',
+          transform: expanded ? `scale(${zoom})` : 'none'
+        }}
       />
+
+      {/* Zoom reset button */}
+      {expanded && zoom !== 1 && (
+        <button
+          onClick={resetZoom}
+          className="absolute top-4 right-4 rounded-full border border-white/20 bg-black/50 p-2 text-xs text-white backdrop-blur-sm transition-all hover:bg-white/10"
+        >
+          Reset Zoom
+        </button>
+      )}
     </div>
   );
 }
@@ -347,16 +391,20 @@ function AlbumStrip({ albums, selectedAlbumId, onAlbumClick }) {
   );
 }
 
-function ControlButton({ icon: Icon, label, onClick }) {
+function IconButton({ icon: Icon, onClick, active = false }) {
   return (
     <motion.button
       onClick={onClick}
-      className="flex items-center gap-2 rounded-lg border border-white/20 bg-black/50 px-3 py-2 text-white backdrop-blur-sm transition-all hover:bg-white/10"
+      className={cn(
+        'flex items-center justify-center rounded-lg border p-2 text-white backdrop-blur-sm transition-all',
+        active
+          ? 'border-white/40 bg-white/20'
+          : 'border-white/20 bg-black/50 hover:bg-white/10'
+      )}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <Icon className="h-5 w-5" />
-      <span className="text-sm">{label}</span>
     </motion.button>
   );
 }
