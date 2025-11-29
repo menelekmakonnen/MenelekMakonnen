@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   HomeIcon,
@@ -11,65 +11,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/contexts/AppContext';
 import { PAGES, PAGE_TITLES } from '@/lib/constants/pages';
-import { TITLE_POOL, INITIAL_TITLES } from '@/lib/constants/titles';
-import { cn, getRandomItem } from '@/lib/utils/helpers';
+import { cn } from '@/lib/utils/helpers';
 
 export default function Header() {
   const { currentPage, navigateToPage } = useApp();
-  const [subtitles, setSubtitles] = useState(INITIAL_TITLES);
-  const [intervalId, setIntervalId] = useState(null);
-
-  // Function to change a subtitle at a specific slot or random slot
-  const changeSubtitle = (slotIndex = null) => {
-    setSubtitles(prev => {
-      const newSubtitles = [...prev];
-      const targetSlot = slotIndex !== null ? slotIndex : Math.floor(Math.random() * 3);
-
-      // Get a new title that's different from ALL current titles (no repeats across any slots)
-      let newTitle;
-      let attempts = 0;
-      do {
-        newTitle = getRandomItem(TITLE_POOL);
-        attempts++;
-      } while (newSubtitles.includes(newTitle) && attempts < 50);
-
-      // Only update if we found a unique title
-      if (!newSubtitles.includes(newTitle)) {
-        newSubtitles[targetSlot] = newTitle;
-      }
-
-      return newSubtitles;
-    });
-  };
-
-  // Handle subtitle click - change immediately and restart timer
-  const handleSubtitleClick = (index) => {
-    // Clear existing interval
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-
-    // Change the clicked subtitle
-    changeSubtitle(index);
-
-    // Restart the interval
-    const newInterval = setInterval(() => {
-      changeSubtitle();
-    }, 2500);
-
-    setIntervalId(newInterval);
-  };
-
-  // Rotate subtitles every 2.5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      changeSubtitle();
-    }, 2500);
-
-    setIntervalId(interval);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const pageIcons = {
     [PAGES.HOME]: HomeIcon,
@@ -85,7 +30,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/10 bg-black/50 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Title and Subtitle */}
+          {/* Title */}
           <div className="flex-1">
             <button
               onClick={() => navigateToPage(PAGES.HOME)}
@@ -94,33 +39,6 @@ export default function Header() {
               <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">
                 Menelek Makonnen
               </h1>
-
-              {/* Rotating subtitles - clickable to change */}
-              <div className="mt-1 flex gap-2 text-xs text-white/60 md:text-sm">
-                {subtitles.map((title, index) => (
-                  <button
-                    key={`slot-${index}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSubtitleClick(index);
-                    }}
-                    className="relative min-w-[100px] cursor-pointer transition-colors hover:text-white/80"
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={title}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute left-0 whitespace-nowrap"
-                      >
-                        {title}
-                      </motion.span>
-                    </AnimatePresence>
-                  </button>
-                ))}
-              </div>
             </button>
           </div>
 

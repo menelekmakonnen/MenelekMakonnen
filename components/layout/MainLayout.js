@@ -5,6 +5,7 @@ import { getThemeForTime } from '@/lib/utils/helpers';
 import Header from './Header';
 import CameraHUD from '../hud/CameraHUD';
 import CameraOverlays from '../hud/CameraOverlays';
+import CameraVisualEffects from '../hud/CameraVisualEffects';
 import InfoOverlays from '../overlays/InfoOverlays';
 import CameraCursor from '../cursor/CameraCursor';
 import KeyboardHandler from './KeyboardHandler';
@@ -36,6 +37,9 @@ export default function MainLayout({ children }) {
 
         {/* Camera overlays (Grid, Focus Peaking, Zebra, Histogram, Waveform) */}
         <CameraOverlays />
+
+        {/* Camera visual effects (ISO grain, Aperture blur, Shutter motion) */}
+        <CameraVisualEffects />
 
         {/* Main content area */}
         <main

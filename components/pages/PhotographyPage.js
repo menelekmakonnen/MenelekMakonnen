@@ -86,14 +86,6 @@ export default function PhotographyPage() {
               Photography albums will be populated from Google Drive.
               This feature is currently in development.
             </p>
-            <a
-              href="https://drive.google.com/drive/folders/1G_6TgOtftLKwqRWjH-tFLuCgp_Oydor4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-block text-sm text-blue-400 hover:underline"
-            >
-              View on Google Drive →
-            </a>
           </motion.div>
         </>
       ) : selectedCategory && !selectedAlbum ? (

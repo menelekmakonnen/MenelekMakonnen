@@ -58,18 +58,10 @@ export default function AIAlbumsPage() {
             <h3 className="mb-2 text-xl font-semibold text-green-400">
               AI Album Integration Coming Soon
             </h3>
-            <p className="mb-4 text-white/60">
+            <p className="text-white/60">
               AI-generated image albums will be populated from Google Drive.
               This feature is currently in development.
             </p>
-            <a
-              href="https://drive.google.com/drive/folders/1G_6TgOtftLKwqRWjH-tFLuCgp_Oydor4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block text-sm text-green-400 hover:underline"
-            >
-              View on Google Drive →
-            </a>
           </motion.div>
 
           {/* Placeholder album grid */}
