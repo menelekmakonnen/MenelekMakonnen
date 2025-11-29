@@ -7,14 +7,15 @@ import {
   CameraIcon,
   SparklesIcon,
   VideoCameraIcon,
-  LinkIcon
+  LinkIcon,
+  GlobeAltIcon
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/contexts/AppContext';
 import { PAGES, PAGE_TITLES } from '@/lib/constants/pages';
 import { cn } from '@/lib/utils/helpers';
 
 export default function Header() {
-  const { currentPage, navigateToPage } = useApp();
+  const { currentPage, navigateToPage, easterEggActive, setEasterEggActive } = useApp();
 
   const pageIcons = {
     [PAGES.HOME]: HomeIcon,
@@ -29,19 +30,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/10 bg-black/50 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Title */}
-          <div className="flex-1">
-            <button
-              onClick={() => navigateToPage(PAGES.HOME)}
-              className="group text-left transition-opacity hover:opacity-80"
-            >
-              <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">
-                Menelek Makonnen
-              </h1>
-            </button>
-          </div>
-
+        <div className="grid grid-cols-3 items-center">
           {/* Navigation Icons */}
           <nav className="flex items-center gap-2 md:gap-4">
             {Object.entries(pageIcons).map(([page, Icon]) => (
@@ -56,8 +45,23 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Title */}
+          <div className="flex items-center justify-center">
+            <button
+              onClick={() => navigateToPage(PAGES.HOME)}
+              className="group text-center transition-opacity hover:opacity-80"
+            >
+              <h1 className="text-xl font-bold tracking-tight text-white md:text-2xl">
+                Menelek Makonnen
+              </h1>
+            </button>
+          </div>
+
           {/* Premium Brand Icon (animated) */}
-          <PremiumNavIcon />
+          <PremiumNavIcon
+            easterEggActive={easterEggActive}
+            onToggle={() => setEasterEggActive(prev => !prev)}
+          />
         </div>
       </div>
     </header>
@@ -116,31 +120,27 @@ function NavIcon({ page, Icon, isActive, onClick, label }) {
   );
 }
 
-function PremiumNavIcon() {
+function PremiumNavIcon({ easterEggActive, onToggle }) {
   return (
-    <div className="ml-4 hidden md:block">
+    <div className="ml-4 hidden justify-end md:flex">
       <motion.div
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-green-500/20 backdrop-blur-sm"
-        animate={{
-          background: [
-            'linear-gradient(to bottom right, rgba(59,130,246,0.2), rgba(34,197,94,0.2))',
-            'linear-gradient(to bottom right, rgba(34,197,94,0.2), rgba(59,130,246,0.2))',
-            'linear-gradient(to bottom right, rgba(59,130,246,0.2), rgba(34,197,94,0.2))'
-          ]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        onClick={onToggle}
+        className={cn(
+          'group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-blue-500/30 via-cyan-400/10 to-emerald-400/30 backdrop-blur-sm transition-colors',
+          easterEggActive ? 'ring-2 ring-cyan-400/50' : ''
+        )}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.96 }}
+        animate={{ scale: [1, easterEggActive ? 1.07 : 1.03, 1], rotateZ: [0, 6, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <motion.svg
-          className="h-5 w-5 text-white/60"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          animate={{
-            rotateY: [0, 360]
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+        <motion.div
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 shadow-inner"
+          animate={{ rotateZ: 360 }}
+          transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
         >
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-        </motion.svg>
+          <GlobeAltIcon className="h-5 w-5 text-white/70 transition-colors group-hover:text-white" />
+        </motion.div>
       </motion.div>
     </div>
   );
