@@ -1,21 +1,35 @@
-import Head from 'next/head';
+import Link from 'next/link';
 
-export default function Photography() {
+export async function getServerSideProps({ req }) {
+  const folderId = '1G_6TgOtftLKwqRWjH-tFLuCgp_Oydor4';
+  const protocol = req.headers['x-forwarded-proto'] || 'http';
+  const host = req.headers.host;
+  const res = await fetch(`${protocol}://${host}/api/list-drive-folder?id=${folderId}`);
+  const data = await res.json();
+  // Filter to only include Beauty and Professional subfolders
+  const items = (data.items || []).filter(
+    (item) => item.type === 'folder' && (item.name === 'Beauty' || item.name === 'Professional')
+  );
+  return {
+    props: {
+      items,
+    },
+  };
+}
+
+export default function Photography({ items }) {
   return (
-    <>
-      <Head>
-        <title>Photography Albums</title>
-      </Head>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">Photography Albums</h1>
-        <iframe
-          src="https://drive.google.com/embeddedfolderview?id=1G_6TgOtftLKwqRWjH-tFLuCgp_Oydor4#grid"
-          width="100%"
-          height="800"
-          className="border-0"
-          allowFullScreen
-        ></iframe>
-      </div>
-    </>
+    <div className="p-4">
+      <h1 className="text-3xl font-bold mb-4">Photography Albums</h1>
+      <ul className="space-y-2">
+        {items.map((item) => (
+          <li key={item.id}>
+            <Link href={`/gallery/${item.id}`} className="text-blue-500 underline">
+              {item.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
